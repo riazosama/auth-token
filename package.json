@@ -4,11 +4,16 @@
   "description": "Module for access and refresh token",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon --config \"./utils/nodemon.json\"/",
     "build": "rm -rf ./build/ && tsc",
-    "start": "node build/start.js"
+    "start": "node build/start.js",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
   },
   "author": "riazosama",
   "license": "ISC",
@@ -21,8 +26,10 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^8.3.6",
     "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
     "ts-node": "^8.6.2",
     "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.5"
   }
 }

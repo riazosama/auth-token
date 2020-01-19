@@ -11,7 +11,6 @@ export interface IData {
 }
 
 class AuthTokens {
-
   private secretOrPrivateKey: Secret[] = [];
   private options: SignOptions[] = [];
 
@@ -40,12 +39,7 @@ class AuthTokens {
    * @param jwtOptions IJWTOptions
    * @param data any
    */
-  public async createTokens(
-    userId: string | number,
-    jwtOptions: IJWtOptions,
-    data: IData,
-  ) {
-
+  public async createTokens(userId: string | number, jwtOptions: IJWtOptions, data: IData) {
     const { payload } = jwtOptions;
 
     // throw error if payload is not according to desired length; which is of length 2;
@@ -53,13 +47,9 @@ class AuthTokens {
       throw new Error('Length must be 2');
     }
 
-    const accessToken = sign(payload[0],
-      this.secretOrPrivateKey[0],
-      this.options[0]);
+    const accessToken = sign(payload[0], this.secretOrPrivateKey[0], this.options[0]);
 
-    const refreshToken = sign(payload[1],
-      this.secretOrPrivateKey[1],
-      this.options[1]);
+    const refreshToken = sign(payload[1], this.secretOrPrivateKey[1], this.options[1]);
 
     // getting previous refresh tokens of the user, merging them with new ones and saving the
     // merged array into Redis
@@ -83,7 +73,7 @@ class AuthTokens {
    */
   private async findToken(userId: string | number, token: string) {
     const allTokens: IData[] = JSON.parse(await Redis.get(String(userId)));
-    return allTokens.find((tk) => tk.refreshToken === token);
+    return allTokens.find(tk => tk.refreshToken === token);
   }
 
   /**
@@ -105,7 +95,7 @@ class AuthTokens {
    */
   public async removeTokenForDevice(userId: string | number, device: string) {
     const allTokens: IData[] = JSON.parse(await Redis.get(String(userId)));
-    const filtered = allTokens.filter((tk) => tk.device !== device);
+    const filtered = allTokens.filter(tk => tk.device !== device);
     Redis.save(String(userId), filtered);
     return true;
   }
@@ -116,14 +106,12 @@ class AuthTokens {
    * @param secretOrPrivateKey string
    */
   public verify(token: string | undefined, type: 'access' | 'refresh' = 'access') {
-
     if (!token) {
       throw new Error('token is undefined');
     }
 
     try {
-      return verify(token,
-         type === 'access' ? this.secretOrPrivateKey[0] : this.secretOrPrivateKey[1]);
+      return verify(token, type === 'access' ? this.secretOrPrivateKey[0] : this.secretOrPrivateKey[1]);
     } catch (err) {
       throw new Error('Invalid Token');
     }
@@ -137,12 +125,7 @@ class AuthTokens {
    * @param jwtOptions IJWtOptions
    * @param data IData
    */
-  public async refreshToken(
-    userId: string | number,
-    refreshToken: string,
-    jwtOptions: IJWtOptions,
-    data: IData) {
-
+  public async refreshToken(userId: string | number, refreshToken: string, jwtOptions: IJWtOptions, data: IData) {
     const oldToken = await this.findToken(userId, refreshToken);
 
     if (!oldToken) {
@@ -157,7 +140,6 @@ class AuthTokens {
 
     await this.removeTokenForDevice(userId, data.device);
     return await this.createTokens(userId, jwtOptions, data);
-
   }
 }
 
