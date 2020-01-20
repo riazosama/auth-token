@@ -4,7 +4,7 @@ Authentication package for handling access tokens and refresh token
 ## Installation
 Using `NPM`
 
-    npm i auth-token
+    npm i auth-token-express
 In Node.js:
 
     import {authToken} from 'auth-token';
