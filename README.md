@@ -7,7 +7,7 @@ Using `NPM`
     npm i auth-token-express
 In Node.js:
 
-    import {authToken} from 'auth-token';
+    import {authToken} from 'auth-token-express';
 
 ## Example
 
