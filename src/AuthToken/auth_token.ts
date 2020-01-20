@@ -1,10 +1,6 @@
 import Redis from '../redis';
 import { sign, verify, SignOptions, Secret } from 'jsonwebtoken';
 
-export interface IJWtOptions {
-  payload: string[] | Buffer[] | object[];
-}
-
 export interface IData {
   device: string;
   refreshToken?: string;
@@ -39,17 +35,16 @@ class AuthTokens {
    * @param jwtOptions IJWTOptions
    * @param data any
    */
-  public async createTokens(userId: string | number, jwtOptions: IJWtOptions, data: IData) {
-    const { payload } = jwtOptions;
-
+  public async createTokens(userId: string | number, jwtOptions: string[] | Buffer[] | object[], data: IData) {
+    
     // throw error if payload is not according to desired length; which is of length 2;
-    if (payload.length < 2 || payload.length > 2) {
+    if (jwtOptions.length < 2 || jwtOptions.length > 2) {
       throw new Error('Length must be 2');
     }
 
-    const accessToken = sign(payload[0], this.secretOrPrivateKey[0], this.options[0]);
+    const accessToken = sign(jwtOptions[0], this.secretOrPrivateKey[0], this.options[0]);
 
-    const refreshToken = sign(payload[1], this.secretOrPrivateKey[1], this.options[1]);
+    const refreshToken = sign(jwtOptions[1], this.secretOrPrivateKey[1], this.options[1]);
 
     // getting previous refresh tokens of the user, merging them with new ones and saving the
     // merged array into Redis
@@ -125,7 +120,7 @@ class AuthTokens {
    * @param jwtOptions IJWtOptions
    * @param data IData
    */
-  public async refreshToken(userId: string | number, refreshToken: string, jwtOptions: IJWtOptions, data: IData) {
+  public async refreshToken(userId: string | number, refreshToken: string, jwtOptions: string[] | Buffer[] | object[], data: IData) {
     const oldToken = await this.findToken(userId, refreshToken);
 
     if (!oldToken) {

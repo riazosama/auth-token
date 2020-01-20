@@ -8,6 +8,14 @@ Using `NPM`
 In Node.js:
 
     import {authToken} from 'auth-token';
+
+## Example
+
+    git clone git@github.com:riazosama/auth-token.git
+    cd example
+    npm install
+    npm run dev
+
 ## Why auth-token
 Auth-token makes authentication relatively an easy process. You don't need to worry about access_token / refresh_token creation. This package depends upon `redis` to manage and store refresh_tokens. This package is great for:
 

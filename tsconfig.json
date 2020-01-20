@@ -14,7 +14,7 @@
       ],
       "declaration": true
     },
-    "include": [
+    "include": [ 
       "./src/**/*.ts"
     ],
     "exclude": [
