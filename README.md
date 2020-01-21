@@ -43,6 +43,7 @@ This method will initilize the package. The best place to use this method would 
 ### `createTokens:Promise<{accessToken: string, refreshToken: string}>`
 Will create `accessToken` and `refreshToken` based on the secret or private key passed in the [initilize](#initilize) method. The `refreshToken` will saved in `redis` server against the `userId`
 
+#### Parameters
 | Parameter | Type | Description |
 |--|--|--|
 |userId| `string`,<br>`number`| Id of the user for which you want to save `refreshToken`
@@ -51,32 +52,40 @@ Will create `accessToken` and `refreshToken` based on the secret or private key 
 
 ### `removeAllToken:Promise<boolean>`
 This will remove all `refreshTokens` of a specific user. Best use case to use this method will be when you observe some abnormal behavior for an account and want to logout the user from all the devices.
+
+#### Parameters
 | Parameter | Type | Description |
 |--|--|--|
-|userId|`string`,<br>`number`|UserId against which you want to delete all data stored in redis.
+|userId| `string`,<br>`number`| UserId against which you want to delete all data stored in redis.
 
 ### `removeTokenForDevice:Promise<boolean>`
 Will remove a `refreshToken` for a specifc user against a specific device. Should be used when a user logsout from a singlr device.
+
+#### Parameters
 | Parameter | Type | Description |
 |--|--|--|
-|userId|`string`,<br>`number`|UserId against which you want to delete data stored in redis.
-|device|`string`|`user-agent`'s name against which you want to delete data stored in redis
+|userId| `string`,<br>`number`| UserId against which you want to delete data stored in redis.
+|device| `string`| `user-agent`'s name against which you want to delete data stored in redis
 
 ### `verify:string | object`
 Checks if a JWT token is valid or not
+
+#### Parameters
 | Parameter | Type | Description |
 |--|--|--|
-|token|`string`|Token which needs to be verified
-|type|`'access'`,<br>`'refresh'`|Type of token which needs to be verified. Deafult is `'access'`
+|token| `string`| Token which needs to be verified
+|type| `'access'`,<br>`'refresh'`| Type of token which needs to be verified. Deafult is `'access'`
 
 ### `refreshToken:Promise<{accessToken: string, refreshToken: string}>`
 This method should be used when you want to refresh you `accessToken`
+
+#### Parameters
 | Parameter | Type | Description |
 |--|--|--|
-|userId|`string`,<br>`number`|Id of user used to fetch data from redis
-|refreshToken|`string`|Token which will be validated and used to create new tokens
-|payload|`string`,<br>`Buffer`,<br>`object`|All additional information which you want to store within both tokens
-|data|[IData](#idata)| All additional information which you want to store in redis in addition to your `refreshToken` against `userId`
+|userId| `string`,<br>`number`| Id of user used to fetch data from redis
+|refreshToken| `string`| Token which will be validated and used to create new tokens
+|payload| `string`,<br>`Buffer`,<br>`object`|All additional information which you want to store within both tokens
+|data| [IData](#idata)| All additional information which you want to store in redis in addition to your `refreshToken` against `userId`
 
 ## Interfaces
 
