@@ -32,19 +32,13 @@ class AuthTokens {
    * This will create accessToken and refreshToken which is also saved in Redis
    *
    * @param userId string | number
-   * @param jwtOptions IJWTOptions
-   * @param data any
+   * @param payload string | Buffer | object
+   * @param data IData
    */
-  public async createTokens(userId: string | number, jwtOptions: string[] | Buffer[] | object[], data: IData) {
-    
-    // throw error if payload is not according to desired length; which is of length 2;
-    if (jwtOptions.length < 2 || jwtOptions.length > 2) {
-      throw new Error('Length must be 2');
-    }
+  public async createTokens(userId: string | number, payload: string | Buffer | object, data: IData) {
+    const accessToken = sign(payload, this.secretOrPrivateKey[0], this.options[0]);
 
-    const accessToken = sign(jwtOptions[0], this.secretOrPrivateKey[0], this.options[0]);
-
-    const refreshToken = sign(jwtOptions[1], this.secretOrPrivateKey[1], this.options[1]);
+    const refreshToken = sign(payload, this.secretOrPrivateKey[1], this.options[1]);
 
     // getting previous refresh tokens of the user, merging them with new ones and saving the
     // merged array into Redis
@@ -98,7 +92,7 @@ class AuthTokens {
   /**
    * Verify JWT token
    * @param token string
-   * @param secretOrPrivateKey string
+   * @param type 'access' | 'refresh' // default = 'access'
    */
   public verify(token: string | undefined, type: 'access' | 'refresh' = 'access') {
     if (!token) {
@@ -117,10 +111,15 @@ class AuthTokens {
    *
    * @param userId string | number
    * @param refreshToken string
-   * @param jwtOptions IJWtOptions
+   * @param payload string | Buffer | object
    * @param data IData
    */
-  public async refreshToken(userId: string | number, refreshToken: string, jwtOptions: string[] | Buffer[] | object[], data: IData) {
+  public async refreshToken(
+    userId: string | number,
+    refreshToken: string,
+    payload: string | Buffer | object,
+    data: IData,
+  ) {
     const oldToken = await this.findToken(userId, refreshToken);
 
     if (!oldToken) {
@@ -134,7 +133,7 @@ class AuthTokens {
     }
 
     await this.removeTokenForDevice(userId, data.device);
-    return await this.createTokens(userId, jwtOptions, data);
+    return await this.createTokens(userId, payload, data);
   }
 }
 

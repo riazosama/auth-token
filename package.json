@@ -1,6 +1,6 @@
 {
   "name": "auth-token-express",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Module for access and refresh token",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -12,7 +12,7 @@
     "watch": "nodemon --config \"./utils/nodemon.json\"/",
     "build": "rm -rf ./build/ && tsc",
     "start": "node build/start.js",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" \"example/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
