@@ -25,7 +25,7 @@
     "url": "git@github.com:riazosama/auth-token.git"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "redis": "^2.8.0",
     "tslib": "^1.10.0"
   },
